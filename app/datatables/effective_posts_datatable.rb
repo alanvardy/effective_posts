@@ -6,7 +6,6 @@ class EffectivePostsDatatable < Effective::Datatable
     col :id, visible: false
 
     col :title
-    col :slug, visible: false
     col :category, search: { collection: EffectivePosts.categories }
 
     if EffectivePosts.submissions_enabled

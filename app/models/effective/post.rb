@@ -2,7 +2,6 @@ module Effective
   class Post < ActiveRecord::Base
     acts_as_role_restricted if defined?(EffectiveRoles) && EffectivePosts.use_effective_roles
     acts_as_regionable
-    acts_as_slugged
 
     self.table_name = EffectivePosts.posts_table_name.to_s
 
@@ -12,14 +11,12 @@ module Effective
     # title             :string
     # description       :string
 
-    # slug              :string
-
     # category          :string
 
     # draft             :boolean
     # published_at      :datetime
     # tags              :text
-
+    
     # roles_mask        :integer
 
     # Event Fields
@@ -70,10 +67,6 @@ module Effective
       scope
     }
 
-    def to_param
-      slug || "#{id}-#{title.parameterize}"
-    end
-
     def to_s
       title.presence || 'New Post'
     end
@@ -96,6 +89,10 @@ module Effective
 
     def body=(input)
       region(:body).content = input
+    end
+
+    def to_param
+      "#{id}-#{title.parameterize}"
     end
 
     # 3.333 words/second is the default reading speed.
